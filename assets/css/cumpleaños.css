@@ -1,0 +1,232 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Playfair Display', serif;
+  background: linear-gradient(180deg, #ffe4ec, #ffd1dc);
+  height: 100vh;
+  overflow: hidden;
+  transition: opacity 1.2s ease;
+}
+
+body.fade-out {
+  opacity: 0;
+}
+
+#app {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.page {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1s ease, transform 1s ease;
+  pointer-events: none;
+}
+
+.page.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
+
+.text {
+  font-size: 1.5rem;
+  line-height: 1.9;
+  letter-spacing: 0.02em;
+  color: #5a2a42;
+  margin-bottom: 2rem;
+  max-width: 620px;
+}
+
+.btn {
+  background: rgba(255, 182, 193, 0.8);
+  border: none;
+  padding: 0.8rem 1.8rem;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  border-radius: 999px;
+  cursor: pointer;
+  color: #4a1f33;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+  background: rgba(255, 182, 193, 1);
+}
+
+.page:nth-child(3) .text {
+  color: #6a2d4d;
+}
+
+.page:nth-child(4) .text {
+  color: #7a3b55;
+}
+
+.page:nth-child(4) {
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 220, 230, 0.6),
+    transparent 70%
+  );
+}
+
+.page:nth-child(5) .text {
+  color: #5f3a4f;
+}
+
+.page:nth-child(5) {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 240, 245, 0.6),
+    transparent
+  );
+}
+
+.page:nth-child(6) .text {
+  color: #6b4a5a;
+}
+
+.page:nth-child(6) {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 235, 240, 0.7),
+    rgba(255, 245, 250, 0.9)
+  );
+}
+
+.page:last-child .text {
+  color: #8a3d6b;
+  font-size: 1.5rem;
+}
+
+.page:last-child {
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 210, 230, 0.9),
+    rgba(255, 240, 245, 1)
+  );
+}
+
+#sakura-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 5;
+}
+
+.sakura {
+  position: absolute;
+  top: -10%;
+  width: 14px;
+  height: 14px;
+  background: pink;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(45deg);
+  opacity: 0.8;
+  animation: fall linear infinite;
+  pointer-events: none;
+}
+
+.secret-petal {
+  background: radial-gradient(circle at 30% 30%, #fff5fb, #ff7ac8, #ff4fa3);
+  box-shadow:
+    0 0 15px rgba(255, 122, 200, 0.9),
+    0 0 30px rgba(255, 122, 200, 0.8),
+    0 0 50px rgba(255, 79, 163, 0.7);
+  animation:
+    fall linear infinite,
+    glowStrong 1.2s infinite alternate;
+  cursor: pointer;
+  z-index: 20;
+  pointer-events: auto;
+}
+
+@keyframes glowStrong {
+  from {
+    box-shadow:
+      0 0 10px rgba(255, 122, 200, 0.6),
+      0 0 25px rgba(255, 122, 200, 0.6),
+      0 0 40px rgba(255, 79, 163, 0.5);
+  }
+  to {
+    box-shadow:
+      0 0 25px rgba(255, 160, 220, 1),
+      0 0 45px rgba(255, 160, 220, 0.9),
+      0 0 70px rgba(255, 79, 163, 0.8);
+  }
+}
+
+@keyframes fall {
+  0% {
+    transform: translateX(0) translateY(0) rotate(0deg);
+  }
+  100% {
+    transform: translateX(40px) translateY(120vh) rotate(360deg);
+  }
+}
+
+#music-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 182, 193, 0.8);
+  color: #4a1f33;
+  font-size: 1.2rem;
+  cursor: pointer;
+  z-index: 10;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+#music-btn:hover {
+  transform: scale(1.1);
+  background: rgba(255, 182, 193, 1);
+}
+
+.secret-page {
+  background: radial-gradient(circle at center, #fff0f7, #ffd6e8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 2rem;
+}
+
+.secret-message {
+  max-width: 650px;
+  font-size: 1.4rem;
+  line-height: 2;
+  color: #5a2a42;
+  opacity: 0;
+  animation: fadeIn 2s ease forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}

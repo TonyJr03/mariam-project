@@ -1,0 +1,97 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  background: linear-gradient(180deg, #ffd7e9, #ffc8e0, #ffedf5);
+  font-family: "Poppins", sans-serif;
+}
+
+.titulo {
+  margin-top: 40px;
+  font-family: "Playfair Display", serif;
+  font-size: 1.9rem;
+  color: #9f3e6b;
+  letter-spacing: 1px;
+  text-shadow: 0 0 6px rgba(255,255,255,0.6);
+}
+
+.sub {
+  margin-top: 6px;
+  font-size: 0.9rem;
+  color: #713255;
+  opacity: 0.85;
+}
+
+.burbujas {
+  margin-top: 70px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  width: 80%;
+}
+
+.burbuja {
+  padding: 22px 30px;
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 30px;
+  backdrop-filter: blur(10px);
+  color: #5c2743;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 400;
+  text-align: center;
+  transition: 0.35s ease;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+  animation: flotar 4.5s ease-in-out infinite;
+}
+
+.burbuja:hover {
+  transform: translateY(-8px) scale(1.05);
+  background: rgba(255,255,255,0.55);
+}
+
+/* Animación flotante */
+@keyframes flotar {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+  100% { transform: translateY(0px); }
+}
+
+/* Sparkles */
+.sparkles {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,0.8) 2px, transparent 3px);
+  background-size: 120px 120px;
+  animation: shimmer 12s linear infinite;
+  opacity: 0.4;
+  z-index: 0;
+}
+
+@keyframes shimmer {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-200px); }
+}
+
+/* === RESPONSIVO MÓVIL === */
+@media (max-width: 600px) {
+  .titulo {
+    font-size: 1.6rem;
+  }
+
+  .burbuja {
+    width: 90%;
+  }
+}
