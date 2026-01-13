@@ -1,28 +1,50 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <!-- Meta Tags -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- SEO y privacidad -->
+  <meta name="description" content="Un sitio especial para Mariam - Pequeños instantes para siempre">
+  <meta name="robots" content="noindex, nofollow">
+  <!-- Open Graph para redes sociales -->
+  <meta property="og:title" content="Para ti, Mariam">
+  <meta property="og:description" content="Pequeños instantes... para siempre ✨">
+  <meta property="og:type" content="website">
+  <!-- Título -->
   <title>Para ti, Mariam</title>
-  <link rel="stylesheet" href="assets/css/styles.css">
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/images/favicon_principal.png">
+  <!-- Preconexión a Google Fonts (optimización de carga) y Fuentes -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+  <!-- Estilos -->
+  <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
+  <!-- Contenido principal -->
+  <main>
+    <!-- Encabezado -->
+    <header>
+      <h1 class="title">Para ti, Mariam</h1>
+      <p class="subtitle">Pequeños instantes... para siempre <span aria-hidden="true">✨</span></p>
+    </header>
 
-  <h1 class="titulo">Para ti, Mariam</h1>
+    <!-- Navegación - Burbujas -->
+    <nav class="bubbles" aria-label="Secciones del sitio">
+      <!-- Burbuja 1: Cumpleaños -->
+      <a href="birthday2026.html" class="bubble" data-target="birthday2026.html" aria-label="Ir a la sección de cumpleaños 2026">
+        <span aria-hidden="true">🎂</span> Cumpleaños 2026
+      </a>
+      <!-- Aquí puedes agregar más burbujas en el futuro -->
+    </nav>
+  </main>
 
-  <p class="sub">Pequeños instantes... para siempre ✨</p>
+  <!-- Elemento decorativo de fondo -->
+  <div class="sparkles" aria-hidden="true"></div>
 
-  <div class="burbujas">
-    <a class="burbuja" href="cumpleaños.html">
-      🎂 Cumpleaños 2026
-    </a>
-  </div>
-
-  <div class="sparkles"></div>
-
+  <!-- Scripts al final para mejor rendimiento -->
   <script src="assets/js/main.js"></script>
 </body>
 </html>

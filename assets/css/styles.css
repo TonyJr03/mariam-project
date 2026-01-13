@@ -1,97 +1,260 @@
-* {
+/* ============ VARIABLES CSS ========================= */
+:root {
+  /* Paleta de colores */
+  --color-primary: #9f3e6b;
+  --color-secondary: #713255;
+  --color-accent: #5c2743;
+  --color-white: #ffffff;
+  /* Fondos y gradientes */
+  --gradient-bg: linear-gradient(180deg, #ffd7e9, #ffc8e0, #ffedf5);
+  --bubble-bg: rgba(255, 255, 255, 0.35);
+  --bubble-bg-hover: rgba(255, 255, 255, 0.55);
+  /* Tipografía */
+  --font-primary: "Poppins", sans-serif;
+  --font-display: "Playfair Display", serif;
+  --font-size-base: 1rem;
+  --font-size-small: 0.9rem;
+  --font-size-title: 1.9rem;
+  /* Espaciado */
+  --spacing-xs: 6px;
+  --spacing-sm: 20px;
+  --spacing-md: 40px;
+  --spacing-lg: 70px;
+  /* Efectos */
+  --blur-amount: 10px;
+  --shadow-soft: 0 4px 18px rgba(0, 0, 0, 0.08);
+  --text-shadow-glow: 0 0 6px rgba(255, 255, 255, 0.6);
+  /* Transiciones */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.35s ease;
+  --transition-slow: 1s ease;
+  /* Bordes */
+  --border-radius-md: 30px;
+}
+
+/* ============== RESET Y BASE ====================== */
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+html {
+  /* Mejora el renderizado de fuentes */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
+/* ============ LAYOUT PRINCIPAL ======================= */
 body {
-  height: 100vh;
-  width: 100vw;
+  min-height: 100vh;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: hidden;
-  background: linear-gradient(180deg, #ffd7e9, #ffc8e0, #ffedf5);
-  font-family: "Poppins", sans-serif;
+  overflow-x: hidden; /* Evita scroll horizontal */
+  background: var(--gradient-bg);
+  font-family: var(--font-primary);
+  transition: opacity var(--transition-slow);
+  opacity: 1;
+}
+/* Estado de transición entre páginas */
+body.fade-out {
+  opacity: 0;
+}
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  padding: var(--spacing-sm);
+  z-index: 10; /* Por encima de sparkles */
 }
 
-.titulo {
-  margin-top: 40px;
-  font-family: "Playfair Display", serif;
-  font-size: 1.9rem;
-  color: #9f3e6b;
+/* ============ COMPONENTES - Header ====================== */
+header {
+  text-align: center;
+  margin-top: var(--spacing-md);
+}
+.title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-title);
+  color: var(--color-primary);
   letter-spacing: 1px;
-  text-shadow: 0 0 6px rgba(255,255,255,0.6);
+  text-shadow: var(--text-shadow-glow);
+  margin-bottom: var(--spacing-xs);
 }
-
-.sub {
-  margin-top: 6px;
-  font-size: 0.9rem;
-  color: #713255;
+.subtitle {
+  font-size: var(--font-size-small);
+  color: var(--color-secondary);
   opacity: 0.85;
 }
 
-.burbujas {
-  margin-top: 70px;
+/* ========== COMPONENTES - Bubbles (Navegación) ======================= */
+.bubbles {
+  margin-top: var(--spacing-lg);
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: var(--spacing-sm);
   justify-content: center;
   width: 80%;
+  max-width: 800px;
 }
-
-.burbuja {
+.bubble {
+  /* Estructura */
+  display: inline-block;
   padding: 22px 30px;
-  background: rgba(255, 255, 255, 0.35);
-  border-radius: 30px;
-  backdrop-filter: blur(10px);
-  color: #5c2743;
+  min-width: 200px;
+  /* Estilo */
+  background: var(--bubble-bg);
+  border-radius: var(--border-radius-md);
+  backdrop-filter: blur(var(--blur-amount));
+  box-shadow: var(--shadow-soft);
+  /* Tipografía */
+  color: var(--color-accent);
   text-decoration: none;
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   font-weight: 400;
   text-align: center;
-  transition: 0.35s ease;
-  box-shadow: 0 4px 18px rgba(0,0,0,0.08);
-  animation: flotar 4.5s ease-in-out infinite;
+  /* Efectos */
+  transition: all var(--transition-normal);
+  will-change: transform;
+  animation: float 4.5s ease-in-out infinite;
+  /* Accesibilidad */
+  cursor: pointer;
 }
-
-.burbuja:hover {
-  transform: translateY(-8px) scale(1.05);
-  background: rgba(255,255,255,0.55);
-}
-
-/* Animación flotante */
-@keyframes flotar {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-12px); }
-  100% { transform: translateY(0px); }
-}
-
-/* Sparkles */
-.sparkles {
-  pointer-events: none;
-  position: absolute;
-  inset: 0;
-  background-image:
-    radial-gradient(circle, rgba(255,255,255,0.8) 2px, transparent 3px);
-  background-size: 120px 120px;
-  animation: shimmer 12s linear infinite;
-  opacity: 0.4;
-  z-index: 0;
-}
-
-@keyframes shimmer {
-  from { transform: translateY(0); }
-  to   { transform: translateY(-200px); }
-}
-
-/* === RESPONSIVO MÓVIL === */
-@media (max-width: 600px) {
-  .titulo {
-    font-size: 1.6rem;
+/* Estados interactivos - Solo en dispositivos con hover preciso */
+@media (hover: hover) and (pointer: fine) {
+  .bubble:hover {
+    transform: translateY(-8px) scale(1.05);
+    background: var(--bubble-bg-hover);
   }
+}
+/* Estado de foco para navegación por teclado */
+.bubble:focus {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 4px;
+}
+/* Estado activo para dispositivos táctiles */
+.bubble:active {
+  transform: scale(0.98);
+}
 
-  .burbuja {
+/* ========= EFECTOS DECORATIVOS ====================== */
+.sparkles {
+  /* Posicionamiento */
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  /* Estilo */
+  background-image: radial-gradient(
+    circle, 
+    rgba(255, 255, 255, 0.8) 2px, 
+    transparent 3px
+  );
+  background-size: 120px 120px;
+  /* Efectos */
+  opacity: 0.4;
+  animation: shimmer 12s linear infinite;
+  pointer-events: none; /* No interfiere con clics */
+}
+
+/* =========== ANIMACIONES ==================== */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+@keyframes shimmer {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-200px);
+  }
+}
+
+/* ========== ACCESIBILIDAD ====================== */
+/* Reduce movimiento para usuarios sensibles al movimiento */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+/* Mejora de contraste para modo alto contraste */
+@media (prefers-contrast: high) {
+  .bubble {
+    border: 2px solid var(--color-primary);
+  }
+}
+
+/* =========== RESPONSIVE DESIGN ========================== */
+/* Móviles pequeños (hasta 480px) */
+@media (max-width: 480px) {
+  :root {
+    --font-size-title: 1.4rem;
+    --spacing-md: 30px;
+    --spacing-lg: 50px;
+  }
+  .bubbles {
+    width: 95%;
+  }
+  .bubble {
+    width: 100%;
+    max-width: 280px;
+    padding: 18px 24px;
+  }
+}
+/* Móviles (481px - 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+  :root {
+    --font-size-title: 1.6rem;
+  }
+  .bubbles {
     width: 90%;
   }
+  .bubble {
+    width: 100%;
+    max-width: 320px;
+  }
+}
+/* Tablets (769px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .bubbles {
+    width: 70%;
+  }
+}
+/* Pantallas grandes (1025px+) */
+@media (min-width: 1025px) {
+  .bubbles {
+    width: 60%;
+  }
+}
+
+/* ================== UTILIDADES =========================== */
+/* Clase para ocultar elementos visualmente pero mantenerlos accesibles */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+/* Prevenir selección de texto en elementos interactivos */
+.bubble {
+  -webkit-user-select: none;
+  user-select: none;
 }

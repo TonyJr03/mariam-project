@@ -1,0 +1,364 @@
+/* =========== VARIABLES CSS ====================== */
+:root {
+  /* Paleta de colores */
+  --color-text-base: #5a2a42;
+  --color-text-dark: #4a1f33;
+  --color-text-accent: #8a3d6b;
+  /* Colores de texto por página */
+  --color-page-3: #6a2d4d;
+  --color-page-4: #7a3b55;
+  --color-page-5: #5f3a4f;
+  --color-page-6: #6b4a5a;
+  /* Fondos */
+  --gradient-bg: linear-gradient(180deg, #ffe4ec, #ffd1dc);
+  --btn-bg: rgba(255, 182, 193, 0.8);
+  --btn-bg-hover: rgba(255, 182, 193, 1);
+  /* Pétalos */
+  --petal-pink: pink;
+  --petal-glow-light: #fff5fb;
+  --petal-glow-mid: #ff7ac8;
+  --petal-glow-strong: #ff4fa3;
+  /* Espaciado */
+  --spacing-sm: 1rem;
+  --spacing-md: 2rem;
+  /* Tipografía */
+  --font-display: 'Playfair Display', serif;
+  --font-body: 'Poppins', sans-serif;
+  --font-size-text: 1.5rem;
+  --font-size-btn: 1rem;
+  --line-height-text: 1.9;
+  /* Transiciones */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 1s ease;
+  --transition-slow: 1.2s ease;
+  /* Z-index */
+  --z-sakura: 5;
+  --z-controls: 10;
+  --z-secret-petal: 20;
+}
+
+/* ============= RESET Y BASE ================== */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* =========== LAYOUT PRINCIPAL ==================== */
+body {
+  font-family: var(--font-display);
+  background: var(--gradient-bg);
+  min-height: 100vh;
+  overflow: hidden;
+  transition: opacity var(--transition-slow);
+}
+/* Estado para transición entre páginas */
+body.fade-out {
+  opacity: 0;
+}
+#app {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+}
+
+/* ========== SISTEMA DE PÁGINAS ================ */
+.page {
+  /* Posicionamiento */
+  position: absolute;
+  inset: 0;
+  /* Layout */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: var(--spacing-md);
+  /* Estado inicial (oculto) */
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+  /* Transición suave */
+  transition: 
+    opacity var(--transition-normal),
+    transform var(--transition-normal);
+}
+/* Página activa (visible) */
+.page.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
+/* Variaciones de fondo por página usando data-attributes */
+.page[data-page="4"] {
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 220, 230, 0.6),
+    transparent 70%
+  );
+}
+.page[data-page="5"] {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 240, 245, 0.6),
+    transparent
+  );
+}
+.page[data-page="6"] {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 235, 240, 0.7),
+    rgba(255, 245, 250, 0.9)
+  );
+}
+/* Página final con fondo especial */
+.page--final {
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 210, 230, 0.9),
+    rgba(255, 240, 245, 1)
+  );
+}
+
+/* ========== TIPOGRAFÍA ================== */
+.text {
+  font-size: var(--font-size-text);
+  line-height: var(--line-height-text);
+  letter-spacing: 0.02em;
+  color: var(--color-text-base);
+  margin-bottom: var(--spacing-md);
+  max-width: 620px;
+}
+/* Variaciones de color por página */
+.page[data-page="3"] .text {
+  color: var(--color-page-3);
+}
+.page[data-page="4"] .text {
+  color: var(--color-page-4);
+}
+.page[data-page="5"] .text {
+  color: var(--color-page-5);
+}
+.page[data-page="6"] .text {
+  color: var(--color-page-6);
+}
+/* Texto de la página final */
+.page--final .text {
+  color: var(--color-text-accent);
+}
+/* Título (h2) en página final */
+.text--heading {
+  font-size: var(--font-size-text);
+  font-weight: 500;
+  margin-bottom: var(--spacing-sm);
+}
+
+/* ============ BOTONES ================= */
+.btn {
+  /* Estructura */
+  padding: 0.8rem 1.8rem;
+  border: none;
+  border-radius: 999px;
+  /* Estilo */
+  background: var(--btn-bg);
+  color: var(--color-text-dark);
+  /* Tipografía */
+  font-family: var(--font-body);
+  font-size: var(--font-size-btn);
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  /* Interacción */
+  cursor: pointer;
+  transition: 
+    transform var(--transition-fast),
+    background var(--transition-fast);
+  /* Accesibilidad */
+  -webkit-user-select: none;
+  user-select: none;
+}
+/* Estados interactivos - Solo en dispositivos con hover */
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover {
+    transform: scale(1.05);
+    background: var(--btn-bg-hover);
+  }
+}
+/* Estado de foco para navegación por teclado */
+.btn:focus {
+  outline: 3px solid var(--color-text-accent);
+  outline-offset: 4px;
+}
+/* Estado activo para dispositivos táctiles */
+.btn:active {
+  transform: scale(0.98);
+}
+
+/* ========== PÉTALOS DE SAKURA ============== */
+#sakura-container {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: var(--z-sakura);
+}
+/* Pétalo base */
+.sakura {
+  position: absolute;
+  top: -10%;
+  width: 14px;
+  height: 14px;
+  background: var(--petal-pink);
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(45deg);
+  opacity: 0.8;
+  animation: fall linear infinite;
+  pointer-events: none;
+}
+/* Pétalo secreto (easter egg) */
+.secret-petal {
+  /* Sobrescribir estilos base */
+  width: 16px;
+  height: 16px;
+  opacity: 0.9;
+  /* Estilo especial con gradiente */
+  background: radial-gradient(
+    circle at 30% 30%, 
+    var(--petal-glow-light), 
+    var(--petal-glow-mid), 
+    var(--petal-glow-strong)
+  );
+  /* Efecto de brillo pulsante */
+  animation:
+    fall linear infinite,
+    glowStrong 1.2s infinite alternate;
+  /* Interacción */
+  cursor: pointer;
+  pointer-events: auto;
+  z-index: var(--z-secret-petal);
+}
+
+/* ========== ANIMACIONES =============== */
+/* Animación de caída de pétalos */
+@keyframes fall {
+  from {
+    transform: translateX(0) translateY(0) rotate(0deg);
+  }
+  to {
+    transform: translateX(40px) translateY(120vh) rotate(360deg);
+  }
+}
+/* Animación de brillo del pétalo secreto */
+@keyframes glowStrong {
+  from {
+    box-shadow:
+      0 0 10px rgba(255, 122, 200, 0.6),
+      0 0 25px rgba(255, 122, 200, 0.6),
+      0 0 40px rgba(255, 79, 163, 0.5);
+  }
+  to {
+    box-shadow:
+      0 0 25px rgba(255, 160, 220, 1),
+      0 0 45px rgba(255, 160, 220, 0.9),
+      0 0 70px rgba(255, 79, 163, 0.8);
+  }
+}
+
+/* ============ CONTROLES DE MÚSICA ============ */
+#music-btn {
+  /* Posicionamiento */
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: var(--z-controls);
+  /* Dimensiones */
+  width: 48px;
+  height: 48px;
+  /* Estilo */
+  border: none;
+  border-radius: 50%;
+  background: var(--btn-bg);
+  color: var(--color-text-dark);
+  /* Tipografía */
+  font-size: 1.2rem;
+  /* Interacción */
+  cursor: pointer;
+  transition: 
+    transform var(--transition-fast),
+    background var(--transition-fast);
+}
+/* Estados interactivos */
+@media (hover: hover) and (pointer: fine) {
+  #music-btn:hover {
+    transform: scale(1.1);
+    background: var(--btn-bg-hover);
+  }
+}
+#music-btn:focus {
+  outline: 3px solid var(--color-text-accent);
+  outline-offset: 4px;
+}
+#music-btn:active {
+  transform: scale(0.95);
+}
+
+/* ============ ACCESIBILIDAD =============== */
+/* Reducir movimiento para usuarios sensibles */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* =========== RESPONSIVE DESIGN ================ */
+/* Móviles pequeños (hasta 480px) */
+@media (max-width: 480px) {
+  :root {
+    --font-size-text: 1.2rem;
+    --spacing-md: 1.5rem;
+  }
+  .text {
+    max-width: 90%;
+  }
+  .btn {
+    padding: 0.7rem 1.5rem;
+    font-size: 0.9rem;
+  }
+  #music-btn {
+    width: 44px;
+    height: 44px;
+    bottom: 15px;
+    right: 15px;
+    font-size: 1.1rem;
+  }
+}
+/* Móviles (481px - 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+  :root {
+    --font-size-text: 1.3rem;
+  }
+  .text {
+    max-width: 85%;
+  }
+}
+/* Tablets y superiores (769px+) */
+@media (min-width: 769px) {
+  .text {
+    max-width: 620px;
+  }
+}
+/* Pantallas muy grandes (1440px+) */
+@media (min-width: 1440px) {
+  :root {
+    --font-size-text: 1.6rem;
+  }
+}
