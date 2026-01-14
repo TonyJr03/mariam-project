@@ -2,8 +2,8 @@
 
 Un sitio web especial creado para preservar momentos, recuerdos y sentimientos. Una colección de experiencias que crecerá con el tiempo.
 
-![Estado del Proyecto] en desarrollo
-![Versión] v1.0.0
+![Estado del Proyecto](https://img.shields.io/badge/estado-en%20desarrollo-yellow)
+![Versión](https://img.shields.io/badge/versión-1.0.0-blue)
 
 ---
 
