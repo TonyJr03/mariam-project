@@ -1,0 +1,739 @@
+/* ============ VARIABLES CSS ========================= */
+
+:root {
+  /* Paleta de colores */
+  --color-bg-dark: #0a0a1f;
+  --color-bg-deep: #1a0f2e;
+  --gradient-bg: linear-gradient(180deg, var(--color-bg-deep), var(--color-bg-dark));
+  
+  /* Amor (rosa/rojo) */
+  --color-amor-light: #ff6b9d;
+  --color-amor-mid: #ff4d80;
+  --color-amor-dark: #e63d6f;
+  
+  /* Amistad (azul claro) */
+  --color-amistad-light: #6dd5ed;
+  --color-amistad-mid: #4facfe;
+  --color-amistad-dark: #3b8ed9;
+  
+  /* Glassmorphism */
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.15);
+  --glass-shadow: 0 8px 32px rgba(255, 105, 180, 0.15);
+  --blur-amount: 10px;
+  
+  /* Texto */
+  --color-text: #ffffff;
+  --color-text-dim: rgba(255, 255, 255, 0.95);
+  --color-text-dimmer: rgba(255, 255, 255, 0.5);
+  
+  /* Tipografía */
+  --font-display: "Cormorant Garamond", serif;
+  --font-body: "Poppins", sans-serif;
+  --font-size-title: 2.5rem;
+  --font-size-subtitle: 1rem;
+  --font-size-label: 1rem;
+  --font-size-message-title: 1.8rem;
+  --font-size-message-text: 1.1rem;
+  
+  /* Espaciado */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+  
+  /* Transiciones */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.4s ease;
+  --transition-slow: 0.8s ease;
+  
+  /* Z-index */
+  --z-content: 10;
+  --z-modal-overlay: 100;
+  --z-modal: 110;
+}
+
+
+/* ============ RESET Y BASE ========================= */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+/* ============ LAYOUT PRINCIPAL ========================= */
+
+body {
+  min-height: 100vh;
+  max-height: 100vh;
+  width: 100%;
+  background: var(--gradient-bg);
+  font-family: var(--font-body);
+  color: var(--color-text);
+  overflow: hidden;
+}
+
+#app {
+  min-height: 100vh;
+  max-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  z-index: var(--z-content);
+  overflow: hidden;
+}
+
+
+/* ============ HEADER ========================= */
+
+.header {
+  text-align: center;
+  padding: var(--spacing-md) var(--spacing-md) var(--spacing-sm);
+  flex: 0 0 auto;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-title);
+  font-weight: 400;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-xs);
+  text-shadow: 0 0 20px rgba(255, 105, 180, 0.3);
+}
+
+.subtitle {
+  font-size: var(--font-size-subtitle);
+  color: var(--color-text-dim);
+  letter-spacing: 0.1em;
+  font-weight: 300;
+}
+
+
+/* ============ LAYOUT MOBILE FIRST ========================= */
+
+/* En móvil: orden vertical (header → corazón → total → sliders → botón) */
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  align-items: center; /* Centrar todo horizontalmente */
+  justify-content: center; /* Centrar todo verticalmente */
+}
+
+/* Header primero - fuera del centrado vertical */
+.header {
+  width: 100%;
+  order: 0;
+  position: absolute;
+  top: 0;
+}
+
+/* Corazón segundo */
+.heart-section {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--spacing-sm) var(--spacing-md);
+  flex: 0 0 auto;
+  order: 1;
+}
+
+.heart-container {
+  width: 100%;
+  max-width: 300px; /* Aumentado de 240px a 300px */
+  aspect-ratio: 1;
+  position: relative;
+  filter: drop-shadow(var(--glass-shadow));
+}
+
+/* Wrapper de controles - ajustar para móvil */
+.controls-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  order: 2;
+  gap: var(--spacing-md);
+  padding: 0 var(--spacing-md);
+}
+
+/* Barra de total tercera */
+.total-indicator {
+  max-width: 340px; /* Reducido de 400px a 340px */
+  order: 0; /* Dentro del wrapper va primero */
+}
+
+/* Controles (Sliders) cuartos */
+.controls-section {
+  width: 85%; /* Reducido de 100% a 85% */
+  max-width: 340px; /* Reducido de 400px a 340px */
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  order: 1; /* Dentro del wrapper van segundo */
+}
+
+/* Botón al final */
+.action-section {
+  width: 85%; /* Reducido de 100% a 85% */
+  max-width: 340px; /* Reducido de 400px a 340px */
+  display: flex;
+  justify-content: center;
+  padding-bottom: var(--spacing-md);
+  order: 2; /* Dentro del wrapper va al final */
+}
+
+
+/* ============ DESKTOP LAYOUT (768px+) ========================= */
+
+@media (min-width: 768px) {
+  #app {
+    flex-direction: row;
+    padding: var(--spacing-lg);
+    gap: var(--spacing-xl);
+    align-items: stretch; /* Reset centrado de móvil */
+    justify-content: flex-start; /* Reset centrado vertical de móvil */
+  }
+  
+  .header {
+    position: absolute;
+    top: var(--spacing-lg);
+    left: var(--spacing-lg);
+    text-align: left;
+    padding: 0;
+    z-index: 20;
+    order: 0;
+  }
+  
+  /* Contenedor izquierdo: controles */
+  .controls-wrapper {
+    flex: 0 0 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch; /* Reset centrado */
+    gap: var(--spacing-xl);
+    padding: var(--spacing-xl);
+    padding-top: calc(var(--spacing-xl) * 3);
+    order: 0;
+    max-width: none; /* Reset max-width de móvil */
+    margin-top: 0; /* Reset margin de móvil */
+  }
+  
+  .controls-section {
+    padding: 0;
+    gap: var(--spacing-lg);
+    order: 0;
+    max-width: none; /* Reset max-width de móvil */
+    width: 100%; /* Reset width de móvil */
+  }
+  
+  .total-indicator {
+    margin-top: var(--spacing-md);
+    order: 1;
+    max-width: none; /* Reset max-width de móvil */
+    width: 100%; /* Reset width de móvil */
+  }
+  
+  .action-section {
+    padding: 0;
+    order: 2;
+    max-width: none; /* Reset max-width de móvil */
+    width: 100%; /* Reset width de móvil */
+  }
+  
+  /* Contenedor derecho: corazón */
+  .heart-section {
+    flex: 1;
+    padding: 0;
+    min-height: 100vh;
+    order: 1;
+  }
+  
+  .heart-container {
+    width: 90%;
+    max-width: none;
+    max-height: 90vh;
+  }
+}
+
+@media (min-width: 1200px) {
+  .controls-wrapper {
+    flex: 0 0 450px;
+  }
+  
+  .heart-container {
+    width: 85%;
+  }
+}
+
+
+/* ============ CORAZÓN ========================= */
+
+#heart-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.heart-glass {
+  fill: var(--glass-bg);
+  stroke: var(--glass-border);
+  stroke-width: 0.5;
+  backdrop-filter: blur(var(--blur-amount));
+  transition: all var(--transition-normal);
+}
+
+#fill-amor {
+  transition: height var(--transition-fast) cubic-bezier(0.4, 0, 0.2, 1) opacity var(--transition-normal) ease;
+  mix-blend-mode: screen;
+  transform-origin: bottom;
+}
+
+#fill-amistad {
+  transition: height var(--transition-fast) cubic-bezier(0.4, 0, 0.2, 1) opacity var(--transition-normal) ease;
+  mix-blend-mode: screen;
+  transform-origin: bottom;
+}
+
+/* Animación de latido */
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  10%, 30% {
+    transform: scale(1.08);
+  }
+  20%, 40% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes heartbeat-intense {
+  0%, 100% {
+    transform: scale(1);
+  }
+  10% {
+    transform: scale(1.15);
+  }
+  20% {
+    transform: scale(1.1);
+  }
+  30% {
+    transform: scale(1.15);
+  }
+  40% {
+    transform: scale(1.1);
+  }
+}
+
+.heart-container.beating {
+  animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+.heart-container.beating-intense {
+  animation: heartbeat-intense 1.2s ease-in-out infinite;
+}
+
+
+/* ============ CONTROLES (SLIDERS) ========================= */
+
+.slider-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.slider-label {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: var(--font-size-label);
+  color: var(--color-text);
+  font-weight: 400;
+}
+
+.slider-icon {
+  font-size: 1.5rem;
+}
+
+.slider-name {
+  font-weight: 500;
+}
+
+.slider-wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.slider {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  border-radius: 10px;
+  background: var(--glass-bg);
+  outline: none;
+  border: 1px solid var(--glass-border);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.slider:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid var(--color-text);
+  transition: all var(--transition-fast);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.slider::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid var(--color-text);
+  transition: all var(--transition-fast);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.slider-amor::-webkit-slider-thumb {
+  background: linear-gradient(135deg, var(--color-amor-light), var(--color-amor-dark));
+}
+
+.slider-amor::-moz-range-thumb {
+  background: linear-gradient(135deg, var(--color-amor-light), var(--color-amor-dark));
+}
+
+.slider-amistad::-webkit-slider-thumb {
+  background: linear-gradient(135deg, var(--color-amistad-light), var(--color-amistad-dark));
+}
+
+.slider-amistad::-moz-range-thumb {
+  background: linear-gradient(135deg, var(--color-amistad-light), var(--color-amistad-dark));
+}
+
+.slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+}
+
+.slider::-moz-range-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+}
+
+.slider-value {
+  min-width: 50px;
+  text-align: right;
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+}
+
+
+/* ============ INDICADOR DE TOTAL ========================= */
+
+.total-indicator {
+  margin-top: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.total-bar {
+  width: 100%;
+  height: 12px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Capa de relleno con efecto de gases mezclándose */
+.total-fill {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  transition: opacity var(--transition-normal) ease;
+}
+
+.total-text {
+  text-align: center;
+  font-size: 0.95rem;
+  color: var(--color-text-dim);
+  font-weight: 400;
+}
+
+#total-value {
+  font-weight: 600;
+  color: var(--color-text);
+  font-size: 1.1rem;
+}
+
+/* ============ BOTÓN REVELAR ========================= */
+
+.reveal-btn {
+  padding: 1rem 2.5rem;
+  font-size: 1.1rem;
+  font-family: var(--font-body);
+  font-weight: 500;
+  color: var(--color-text);
+  background: linear-gradient(135deg, var(--color-amor-mid), var(--color-amor-dark));
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  box-shadow: 0 4px 20px rgba(255, 77, 128, 0.3);
+  letter-spacing: 0.05em;
+  position: relative;
+  overflow: hidden;
+}
+
+.reveal-btn::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.reveal-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 30px rgba(255, 77, 128, 0.5);
+}
+
+.reveal-btn:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.reveal-btn:active {
+  transform: translateY(0);
+}
+
+
+/* ============ MODAL DEL MENSAJE ========================= */
+
+.message-section {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal-overlay);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  padding: var(--spacing-md);
+}
+
+.message-section.show {
+  display: flex;
+  animation: fadeIn var(--transition-slow) ease-out;
+}
+
+/* Overlay oscuro */
+.message-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+}
+
+/* Card del mensaje */
+.message-card {
+  position: relative;
+  z-index: var(--z-modal);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--blur-amount));
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: var(--spacing-xl);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  max-width: 600px;
+  width: 100%;
+  animation: slideUp var(--transition-slow) ease-out;
+}
+
+/* Botón cerrar (X) */
+.close-btn {
+  position: absolute;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-text);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.message-title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-message-title);
+  font-weight: 400;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-md);
+  text-align: center;
+  line-height: 1.4;
+  padding-right: var(--spacing-xl);
+}
+
+.message-text {
+  font-size: var(--font-size-message-text);
+  line-height: 1.8;
+  color: var(--color-text-dim);
+  text-align: center;
+  font-weight: 300;
+  margin-bottom: var(--spacing-lg);
+}
+
+/* Botón cerrar inferior */
+.message-close-btn {
+  width: 100%;
+  padding: 0.8rem;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-text);
+  background: linear-gradient(135deg, var(--color-amor-mid), var(--color-amor-dark));
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.message-close-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(255, 77, 128, 0.4);
+}
+
+/* Animaciones del modal */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* ============ ACCESIBILIDAD ========================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+
+/* ============ RESPONSIVE DESIGN ========================= */
+
+/* Móviles pequeños */
+@media (max-width: 480px) {
+  :root {
+    --font-size-title: 1.8rem;
+    --font-size-subtitle: 0.85rem;
+    --font-size-label: 0.9rem;
+    --font-size-message-title: 1.5rem;
+    --font-size-message-text: 1rem;
+    --spacing-md: 0.8rem;
+    --spacing-sm: 0.6rem;
+  }
+  
+  .header {
+    padding: var(--spacing-sm) var(--spacing-md) 0;
+  }
+  
+  .heart-container {
+    max-width: 260px; /* Aumentado de 200px a 260px */
+  }
+  
+  .slider-container {
+    gap: 0.4rem;
+  }
+  
+  .slider-label {
+    font-size: 0.9rem;
+  }
+  
+  .slider-icon {
+    font-size: 1.2rem;
+  }
+  
+  .slider-value {
+    font-size: 1rem;
+    min-width: 45px;
+  }
+  
+  .reveal-btn {
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+  }
+  
+  .message-card {
+    padding: var(--spacing-lg);
+  }
+}
+
+/* Tablets */
+@media (min-width: 481px) and (max-width: 767px) {
+  :root {
+    --font-size-title: 2.2rem;
+  }
+  
+  .heart-container {
+    max-width: 320px; /* Aumentado de 280px a 320px */
+  }
+}
