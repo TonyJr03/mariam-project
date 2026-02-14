@@ -217,7 +217,6 @@ function handleAmorChange() {
   updateHeart();
   updateIndicators();
   updateHeartbeat();
-  saveSliderPositions(); // Solo guardar posiciones, no timestamp
 }
 
 // Manejar cambio en slider de amistad
@@ -235,7 +234,6 @@ function handleAmistadChange() {
   updateHeart();
   updateIndicators();
   updateHeartbeat();
-  saveSliderPositions(); // Solo guardar posiciones, no timestamp
 }
 
 // =========== EVALUACIÓN DE ESTADOS =======================
