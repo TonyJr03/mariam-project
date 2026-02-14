@@ -8,7 +8,10 @@ const CONFIG = {
   MESSAGE_DELAY: 300,
   
   // LocalStorage
-  STORAGE_KEY: 'heart-14feb2026'
+  STORAGE_KEY: 'heart-14feb2026',
+  
+  // Cooldown (24 horas en milisegundos)
+  REVEAL_COOLDOWN: 24 * 60 * 60 * 1000
 };
 
 // Mensajes según el estado
@@ -41,6 +44,11 @@ const MESSAGES = {
   'poco': {
     title: "Un corazón por llenar 🤍",
     text: "Gracias por la honestidad. Incluso lo pequeño, cuando es sincero, vale más que una ilusión grande. Yo prefiero la verdad tranquila antes que algo que no se sienta real."
+  },
+  
+  'cooldown': {
+    title: "Dale tiempo al corazón 💭",
+    text: "Un corazón no cambia lo que siente de un día para otro. Ya revelaste tus sentimientos hoy...\n\nVuelve en: {tiempo}"
   }
 };
 
@@ -209,7 +217,7 @@ function handleAmorChange() {
   updateHeart();
   updateIndicators();
   updateHeartbeat();
-  saveToLocalStorage();
+  //saveToLocalStorage();
 }
 
 // Manejar cambio en slider de amistad
@@ -227,10 +235,74 @@ function handleAmistadChange() {
   updateHeart();
   updateIndicators();
   updateHeartbeat();
-  saveToLocalStorage();
+  //saveToLocalStorage();
 }
 
 // =========== EVALUACIÓN DE ESTADOS =======================
+
+// Formatear tiempo restante en formato legible
+function formatTimeRemaining(milliseconds) {
+  const hours = Math.floor(milliseconds / (1000 * 60 * 60));
+  const minutes = Math.floor((milliseconds % (1000 * 60 * 60)) / (1000 * 60));
+  
+  if (hours > 0) {
+    return `${hours} hora${hours > 1 ? 's' : ''} y ${minutes} minuto${minutes !== 1 ? 's' : ''}`;
+  } else {
+    return `${minutes} minuto${minutes !== 1 ? 's' : ''}`;
+  }
+}
+
+// Verificar si puede revelar (han pasado 24 horas)
+function canReveal() {
+  const saved = localStorage.getItem(CONFIG.STORAGE_KEY);
+  if (!saved) return { can: true }; // Primera vez, puede revelar
+  
+  const state = JSON.parse(saved);
+  const lastRevealTime = state.lastReveal;
+  
+  if (!lastRevealTime) return { can: true }; // Nunca ha revelado
+  
+  const now = new Date().getTime();
+  const timeSinceReveal = now - lastRevealTime;
+  const timeRemaining = CONFIG.REVEAL_COOLDOWN - timeSinceReveal;
+  
+  if (timeSinceReveal >= CONFIG.REVEAL_COOLDOWN) {
+    return { can: true };
+  } else {
+    return { 
+      can: false, 
+      timeRemaining: timeRemaining,
+      formattedTime: formatTimeRemaining(timeRemaining)
+    };
+  }
+}
+
+// Actualizar apariencia del botón según cooldown
+function updateButtonState() {
+  const revealStatus = canReveal();
+  
+  if (!revealStatus.can) {
+    // En cooldown: botón gris y deshabilitado visualmente
+    revealBtn.classList.add('cooldown');
+    revealBtn.setAttribute('data-cooldown', 'true');
+  } else {
+    // Disponible: botón normal
+    revealBtn.classList.remove('cooldown');
+    revealBtn.removeAttribute('data-cooldown');
+  }
+}
+
+// Guardar timestamp del último reveal
+function saveRevealTime() {
+  const saved = localStorage.getItem(CONFIG.STORAGE_KEY);
+  const state = saved ? JSON.parse(saved) : {};
+  
+  state.lastReveal = new Date().getTime();
+  state.amor = amorValue;
+  state.amistad = amistadValue;
+  
+  localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(state));
+}
 
 // Determinar el estado según los valores
 function evaluateState(amor, amistad) {
@@ -272,6 +344,18 @@ function evaluateState(amor, amistad) {
 
 // Mostrar el mensaje según el estado
 function revealMessage() {
+  // Verificar si puede revelar
+  const revealStatus = canReveal();
+  
+  if (!revealStatus.can) {
+    // Mostrar mensaje de cooldown con tiempo restante
+    messageTitle.textContent = MESSAGES['cooldown'].title;
+    messageText.textContent = MESSAGES['cooldown'].text.replace('{tiempo}', revealStatus.formattedTime);
+    messageSection.classList.add('show');
+    console.log(`⏱️ En cooldown. Tiempo restante: ${revealStatus.formattedTime}`);
+    return;
+  }
+  
   // Evaluar estado
   const state = evaluateState(amorValue, amistadValue);
   const message = MESSAGES[state];
@@ -282,6 +366,14 @@ function revealMessage() {
   
   // Mostrar modal
   messageSection.classList.add('show');
+  
+  // Guardar timestamp del reveal
+  saveRevealTime();
+  
+  // Actualizar estado del botón
+  updateButtonState();
+
+  saveToLocalStorage();
   
   console.log(`Estado revelado: ${state}`);
 }
@@ -340,6 +432,9 @@ function init() {
   
   // Cargar estado guardado
   loadFromLocalStorage();
+  
+  // Actualizar estado del botón según cooldown
+  updateButtonState();
   
   // Event listeners para sliders
   sliderAmor.addEventListener('input', handleAmorChange);

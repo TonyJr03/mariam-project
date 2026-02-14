@@ -538,6 +538,28 @@ body {
   transform: translateY(0);
 }
 
+/* Estado de cooldown (botón gris) */
+.reveal-btn.cooldown {
+  background: linear-gradient(135deg, #6b6b6b, #4a4a4a);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.reveal-btn.cooldown:hover {
+  transform: none;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.reveal-btn.cooldown:hover::before {
+  width: 0;
+  height: 0;
+}
+
+.reveal-btn.cooldown:active {
+  transform: none;
+}
+
 
 /* ============ MODAL DEL MENSAJE ========================= */
 
