@@ -255,38 +255,21 @@ function formatTimeRemaining(milliseconds) {
 // Verificar si puede revelar (han pasado 24 horas)
 function canReveal() {
   const saved = localStorage.getItem(CONFIG.STORAGE_KEY);
-  console.log('🔍 Verificando cooldown...');
-  console.log('📦 LocalStorage data:', saved);
   
-  if (!saved) {
-    console.log('✅ Primera vez - puede revelar');
-    return { can: true }; // Primera vez, puede revelar
-  }
+  if (!saved) return { can: true };
   
   const state = JSON.parse(saved);
   const lastRevealTime = state.lastReveal;
   
-  console.log('🕐 Último reveal timestamp:', lastRevealTime);
-  console.log('🕐 Último reveal fecha:', lastRevealTime ? new Date(lastRevealTime).toLocaleString() : 'Nunca');
-  
-  if (!lastRevealTime) {
-    console.log('✅ Nunca ha revelado - puede revelar');
-    return { can: true }; // Nunca ha revelado
-  }
+  if (!lastRevealTime) return { can: true };
   
   const now = new Date().getTime();
   const timeSinceReveal = now - lastRevealTime;
   const timeRemaining = CONFIG.REVEAL_COOLDOWN - timeSinceReveal;
   
-  console.log('⏱️ Tiempo desde último reveal:', timeSinceReveal, 'ms');
-  console.log('⏱️ Cooldown configurado:', CONFIG.REVEAL_COOLDOWN, 'ms');
-  console.log('⏱️ Tiempo restante:', timeRemaining, 'ms');
-  
   if (timeSinceReveal >= CONFIG.REVEAL_COOLDOWN) {
-    console.log('✅ Cooldown completado - puede revelar');
     return { can: true };
   } else {
-    console.log('❌ En cooldown - NO puede revelar');
     return { 
       can: false, 
       timeRemaining: timeRemaining,
@@ -310,25 +293,22 @@ function updateButtonState() {
   }
 }
 
-// Guardar timestamp del último reveal
+// Guardar timestamp del último reveal junto con los valores y estado
 function saveRevealTime() {
   const saved = localStorage.getItem(CONFIG.STORAGE_KEY);
   const state = saved ? JSON.parse(saved) : {};
   
-  const timestamp = new Date().getTime();
-  state.lastReveal = timestamp;
+  // Guardar timestamp
+  state.lastReveal = new Date().getTime();
+  
+  // Guardar valores ACTUALES en el momento del reveal
   state.amor = amorValue;
   state.amistad = amistadValue;
   
-  console.log('💾 Guardando reveal timestamp:', timestamp);
-  console.log('💾 Fecha del reveal:', new Date(timestamp).toLocaleString());
-  console.log('💾 Estado completo a guardar:', state);
+  // Guardar el estado evaluado
+  state.lastState = evaluateState(amorValue, amistadValue);
   
   localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(state));
-  
-  // Verificar que se guardó correctamente
-  const verification = localStorage.getItem(CONFIG.STORAGE_KEY);
-  console.log('✓ Verificación guardado:', verification);
 }
 
 // Determinar el estado según los valores
@@ -401,7 +381,6 @@ function revealMessage() {
   updateButtonState();
   
   console.log(`Estado revelado: ${state}`);
-  console.log(`Timestamp guardado: ${new Date().toLocaleString()}`);
 }
 
 // Cerrar el modal
@@ -431,9 +410,17 @@ function loadFromLocalStorage() {
     if (saved) {
       const state = JSON.parse(saved);
       
-      // Restaurar valores
-      amorValue = state.amor || 0;
-      amistadValue = state.amistad || 0;
+      // Restaurar valores del ÚLTIMO REVEAL (no los que se movieron después)
+      // Si no hay lastReveal, usar los valores guardados normalmente
+      if (state.lastReveal) {
+        // Hay un reveal guardado, usar esos valores
+        amorValue = state.amor || 0;
+        amistadValue = state.amistad || 0;
+      } else {
+        // No hay reveal, usar valores por defecto
+        amorValue = 0;
+        amistadValue = 0;
+      }
       
       // Actualizar sliders
       sliderAmor.value = amorValue;
@@ -473,6 +460,7 @@ function init() {
   closeBtnX.addEventListener('click', closeMessage);
   closeBtn.addEventListener('click', closeMessage);
   messageOverlay.addEventListener('click', closeMessage);
+  
   console.log('✓ Inicialización completa');
 }
 

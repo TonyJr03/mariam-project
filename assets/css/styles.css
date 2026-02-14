@@ -125,10 +125,58 @@ header {
   /* Accesibilidad */
   cursor: pointer;
 }
+
+/* Colores según estado del corazón (14 de febrero) */
+.bubble[data-state="mucho-amor"],
+.bubble[data-state="mayor-amor"] {
+  background: rgba(255, 182, 193, 0.4); /* Rosa */
+  color: #8b2952;
+}
+
+.bubble[data-state="mucha-amistad"],
+.bubble[data-state="mayor-amistad"] {
+  background: rgba(173, 216, 230, 0.4); /* Azul claro */
+  color: #2c5f7a;
+}
+
+.bubble[data-state="equilibrado"] {
+  background: rgba(255, 223, 186, 0.4); /* Amarillo/Durazno */
+  color: #8b6914;
+}
+
+.bubble[data-state="poco"] {
+  background: rgba(200, 200, 200, 0.35); /* Gris */
+  color: #5a5a5a;
+}
+
+/* Hover states para cada color */
+@media (hover: hover) and (pointer: fine) {
+  .bubble[data-state="mucho-amor"]:hover,
+  .bubble[data-state="mayor-amor"]:hover {
+    background: rgba(255, 182, 193, 0.6);
+  }
+  
+  .bubble[data-state="mucha-amistad"]:hover,
+  .bubble[data-state="mayor-amistad"]:hover {
+    background: rgba(173, 216, 230, 0.6);
+  }
+  
+  .bubble[data-state="equilibrado"]:hover {
+    background: rgba(255, 223, 186, 0.6);
+  }
+  
+  .bubble[data-state="poco"]:hover {
+    background: rgba(200, 200, 200, 0.5);
+  }
+}
+
 /* Estados interactivos - Solo en dispositivos con hover preciso */
 @media (hover: hover) and (pointer: fine) {
   .bubble:hover {
     transform: translateY(-8px) scale(1.05);
+  }
+  
+  .bubble:not([data-state]):hover {
     background: var(--bubble-bg-hover);
   }
 }

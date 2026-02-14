@@ -17,6 +17,39 @@ function navigateWithFade(url) {
 
 // =========== INICIALIZACIÓN =======================
 
+// Función para actualizar el color de la burbuja del 14 de febrero
+function updateValentineBubbleColor() {
+  const valentineBubble = document.querySelector('[data-target="14feb2026.html"]');
+  
+  if (!valentineBubble) return; // Si no existe la burbuja, salir
+  
+  try {
+    const saved = localStorage.getItem('heart-14feb2026');
+    
+    if (!saved) {
+      // No hay estado guardado, usar color por defecto (gris)
+      valentineBubble.setAttribute('data-state', 'poco');
+      return;
+    }
+    
+    const state = JSON.parse(saved);
+    const lastState = state.lastState;
+    
+    if (!lastState) {
+      // No hay estado revelado, usar color por defecto
+      valentineBubble.setAttribute('data-state', 'poco');
+      return;
+    }
+    
+    // Asignar el estado como data-attribute para aplicar estilos CSS
+    valentineBubble.setAttribute('data-state', lastState);
+    
+  } catch (error) {
+    console.warn('Error al cargar estado del corazón:', error);
+    valentineBubble.setAttribute('data-state', 'poco');
+  }
+}
+
 // Función para inicializar los event listeners de las burbujas
 function initializeBubbles() {
   // Seleccionar todas las burbujas
@@ -38,6 +71,7 @@ function init() {
   console.log('-- Inicializando main...');
   
   initializeBubbles();
+  updateValentineBubbleColor(); // Actualizar color de burbuja del 14 de febrero
   
   console.log('✓ Inicialización completa');
 }
