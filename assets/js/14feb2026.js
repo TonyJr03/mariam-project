@@ -217,7 +217,7 @@ function handleAmorChange() {
   updateHeart();
   updateIndicators();
   updateHeartbeat();
-  //saveToLocalStorage();
+  saveSliderPositions(); // Solo guardar posiciones, no timestamp
 }
 
 // Manejar cambio en slider de amistad
@@ -235,7 +235,7 @@ function handleAmistadChange() {
   updateHeart();
   updateIndicators();
   updateHeartbeat();
-  //saveToLocalStorage();
+  saveSliderPositions(); // Solo guardar posiciones, no timestamp
 }
 
 // =========== EVALUACIÓN DE ESTADOS =======================
@@ -255,20 +255,38 @@ function formatTimeRemaining(milliseconds) {
 // Verificar si puede revelar (han pasado 24 horas)
 function canReveal() {
   const saved = localStorage.getItem(CONFIG.STORAGE_KEY);
-  if (!saved) return { can: true }; // Primera vez, puede revelar
+  console.log('🔍 Verificando cooldown...');
+  console.log('📦 LocalStorage data:', saved);
+  
+  if (!saved) {
+    console.log('✅ Primera vez - puede revelar');
+    return { can: true }; // Primera vez, puede revelar
+  }
   
   const state = JSON.parse(saved);
   const lastRevealTime = state.lastReveal;
   
-  if (!lastRevealTime) return { can: true }; // Nunca ha revelado
+  console.log('🕐 Último reveal timestamp:', lastRevealTime);
+  console.log('🕐 Último reveal fecha:', lastRevealTime ? new Date(lastRevealTime).toLocaleString() : 'Nunca');
+  
+  if (!lastRevealTime) {
+    console.log('✅ Nunca ha revelado - puede revelar');
+    return { can: true }; // Nunca ha revelado
+  }
   
   const now = new Date().getTime();
   const timeSinceReveal = now - lastRevealTime;
   const timeRemaining = CONFIG.REVEAL_COOLDOWN - timeSinceReveal;
   
+  console.log('⏱️ Tiempo desde último reveal:', timeSinceReveal, 'ms');
+  console.log('⏱️ Cooldown configurado:', CONFIG.REVEAL_COOLDOWN, 'ms');
+  console.log('⏱️ Tiempo restante:', timeRemaining, 'ms');
+  
   if (timeSinceReveal >= CONFIG.REVEAL_COOLDOWN) {
+    console.log('✅ Cooldown completado - puede revelar');
     return { can: true };
   } else {
+    console.log('❌ En cooldown - NO puede revelar');
     return { 
       can: false, 
       timeRemaining: timeRemaining,
@@ -297,11 +315,20 @@ function saveRevealTime() {
   const saved = localStorage.getItem(CONFIG.STORAGE_KEY);
   const state = saved ? JSON.parse(saved) : {};
   
-  state.lastReveal = new Date().getTime();
+  const timestamp = new Date().getTime();
+  state.lastReveal = timestamp;
   state.amor = amorValue;
   state.amistad = amistadValue;
   
+  console.log('💾 Guardando reveal timestamp:', timestamp);
+  console.log('💾 Fecha del reveal:', new Date(timestamp).toLocaleString());
+  console.log('💾 Estado completo a guardar:', state);
+  
   localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(state));
+  
+  // Verificar que se guardó correctamente
+  const verification = localStorage.getItem(CONFIG.STORAGE_KEY);
+  console.log('✓ Verificación guardado:', verification);
 }
 
 // Determinar el estado según los valores
@@ -348,12 +375,12 @@ function revealMessage() {
   const revealStatus = canReveal();
   
   if (!revealStatus.can) {
-    // Mostrar mensaje de cooldown con tiempo restante
+    // Mostrar mensaje de cooldown con tiempo restante (SIN guardar timestamp)
     messageTitle.textContent = MESSAGES['cooldown'].title;
     messageText.textContent = MESSAGES['cooldown'].text.replace('{tiempo}', revealStatus.formattedTime);
     messageSection.classList.add('show');
     console.log(`⏱️ En cooldown. Tiempo restante: ${revealStatus.formattedTime}`);
-    return;
+    return; // IMPORTANTE: Salir sin guardar nada
   }
   
   // Evaluar estado
@@ -367,15 +394,14 @@ function revealMessage() {
   // Mostrar modal
   messageSection.classList.add('show');
   
-  // Guardar timestamp del reveal
+  // SOLO AHORA guardar timestamp del reveal (cuando sí se reveló)
   saveRevealTime();
   
   // Actualizar estado del botón
   updateButtonState();
-
-  saveToLocalStorage();
   
   console.log(`Estado revelado: ${state}`);
+  console.log(`Timestamp guardado: ${new Date().toLocaleString()}`);
 }
 
 // Cerrar el modal
@@ -385,13 +411,14 @@ function closeMessage() {
 
 // =========== LOCAL STORAGE =======================
 
-// Guardar estado en localStorage
-function saveToLocalStorage() {
-  const state = {
-    amor: amorValue,
-    amistad: amistadValue,
-    fecha: new Date().toISOString()
-  };
+// Guardar solo las posiciones de los sliders (sin timestamp)
+function saveSliderPositions() {
+  const saved = localStorage.getItem(CONFIG.STORAGE_KEY);
+  const state = saved ? JSON.parse(saved) : {};
+  
+  // Solo actualizar posiciones, preservar lastReveal
+  state.amor = amorValue;
+  state.amistad = amistadValue;
   
   localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(state));
 }
